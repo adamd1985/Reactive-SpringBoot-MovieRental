@@ -1,0 +1,231 @@
+databaseChangeLog:
+  - preConditions:
+
+  - runningAs:
+      username: sa
+      password: password
+
+  - changeSet:
+      id:  1
+      author: adamd
+      comments: Initialize SCHEMA.
+      changes:
+        - createTable:
+            tableName:  movie_type
+            remarks: Movie type, comes with price difference. can be expanded further for currencies and other conditions.
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_movie_type
+              - column:
+                  name: type
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: currency
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName:  movie
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_movie
+              - column:
+                  name: name
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: inventory
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: movie_type
+                  remarks: Enum of the type of this movie.
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_type
+                    references: movie_type(id)
+        - createTable:
+            tableName:  customer
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_customer
+              - column:
+                  name: name
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bonus_points
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName:  customer_rentals
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_customer_rental
+              - column:
+                  name: date_rented
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_returned
+                  type: DATE
+                  constraints:
+                    nullable: true
+              - column:
+                  name: date_promised
+                  type: DATE
+                  constraints:
+                    nullable: true
+              - column:
+                  name: rental_charge
+                  type: currency
+                  constraints:
+                    nullable: true
+              - column:
+                  name: customer
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_customer
+                    references: customer(id)
+              - column:
+                  name: movie
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie
+                    references: movie(id)
+  - changeSet:
+      id: 2
+      comments: Populate SCHEMA with seed data.
+      author: adamd
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name:  id
+                  value:  1
+              - column:
+                  name:  type
+                  value:  premuim
+              - column:
+                  name:  price
+                  value:  40.00
+            schemaName:  public
+            tableName:  movie_type
+        - insert:
+            columns:
+              - column:
+                  name:  id
+                  value:  2
+              - column:
+                  name:  type
+                  value:  basic
+              - column:
+                  name:  price
+                  value:  30.00
+            schemaName:  public
+            tableName:  movie_type
+        - insert:
+            columns:
+              - column:
+                  name:  id
+                  value:  3
+              - column:
+                  name:  type
+                  value:  old
+              - column:
+                  name:  price
+                  value:  30.00
+            schemaName:  public
+            tableName:  movie_type
+        - insert:
+            columns:
+              - column:
+                  name:  name
+                  value:  matrix
+              - column:
+                  name:  inventory
+                  value:  10
+              - column:
+                  name:  movie_type
+                  value:  1
+            schemaName:  public
+            tableName:  movie
+        - insert:
+            columns:
+              - column:
+                  name:  name
+                  value:  Spiderman
+              - column:
+                  name:  inventory
+                  value:  50
+              - column:
+                  name:  movie_type
+                  value:  2
+            schemaName:  public
+            tableName:  movie
+        - insert:
+            columns:
+              - column:
+                  name:  name
+                  value:  test customer
+            schemaName:  public
+            tableName:  customer
+        - insert:
+            columns:
+              - column:
+                  name:  name
+                  value:  test customer2
+            schemaName:  public
+            tableName:  customer
+        - insert:
+            columns:
+              - column:
+                  name:  date_rented
+                  valueDate: "now()"
+              - column:
+                  name:  date_promised
+                  valueDate: "now()"
+              - column:
+                  name:  customer
+                  valueDate: 1
+              - column:
+                  name:  movie
+                  valueDate: 1
+            schemaName:  public
+            tableName:  customer_rentals

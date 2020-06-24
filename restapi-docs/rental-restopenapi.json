@@ -1,0 +1,446 @@
+{
+  "basePath": "/",
+  "paths": {
+    "/auth": {
+      "post": {
+        "summary": "Login and retrieve userinfo",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "description": "Simply put in username and password. Test username is \u0027test user\u0027or `test user2`, password is empty. The first test user has one rental",
+        "operationId": "loginUsingPOST",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/CustomerEntity"
+            },
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/LoginRequestTO"
+            },
+            "in": "body",
+            "name": "loginRequestTO",
+            "description": "loginRequestTO",
+            "required": true
+          }
+        ],
+        "tags": [
+          "authentication-controller"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/rental": {
+      "post": {
+        "summary": "rent a list of Movies.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "description": "These movies will be removed from their inventories and the user will be charged rental fees.",
+        "operationId": "rentMoviesUsingPOST",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/RentalCharge"
+            },
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/RentalRequestTO"
+            },
+            "in": "body",
+            "name": "rentalRequestTO",
+            "description": "rentalRequestTO",
+            "required": true
+          }
+        ],
+        "tags": [
+          "rental-controller"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "summary": "Return a list of Movies.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "description": "These movies will be returned to their inventories and the user will be charged late feesif any. Also user will be awarded bonuspoints.",
+        "operationId": "closeRentalUsingPUT",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/RentalCharge"
+            },
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/ReturnRentalRequestTO"
+            },
+            "in": "body",
+            "name": "returnRentalRequestTO",
+            "description": "returnRentalRequestTO",
+            "required": true
+          }
+        ],
+        "tags": [
+          "rental-controller"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/movies": {
+      "get": {
+        "summary": "Get List of rentable movies.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "description": "These are movies which have more than 1 item in the inventory.",
+        "operationId": "getAllRentalsUsingGET",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/MovieEntity"
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "tags": [
+          "rental-controller"
+        ]
+      }
+    },
+    "/customer/{id}/rentals": {
+      "get": {
+        "summary": "Get List of rented movies to be returned by the customer.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "description": "These are movies without a return date.",
+        "operationId": "getCustomerRentalsUsingGET",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/CustomerRentalsEntity"
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "format": "int64",
+            "description": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "tags": [
+          "rental-controller"
+        ]
+      }
+    },
+    "/customer/{id}/bonuspoints": {
+      "get": {
+        "summary": "Get a count of the bonus points.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "description": "Bonus points accumulated whenever a user returns a rented movie.",
+        "operationId": "getCusomterBonusPointsUsingGET",
+        "responses": {
+          "200": {
+            "schema": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "format": "int64",
+            "description": "id",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "tags": [
+          "rental-controller"
+        ]
+      }
+    }
+  },
+  "host": "localhost:8080",
+  "definitions": {
+    "RentalRequestTO": {
+      "type": "object",
+      "title": "RentalRequestTO",
+      "properties": {
+        "movies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MovieEntity"
+          }
+        },
+        "customerEntity": {
+          "$ref": "#/definitions/CustomerEntity"
+        },
+        "datePromised": {
+          "format": "date",
+          "type": "string"
+        },
+        "timestamp": {
+          "format": "date",
+          "type": "string"
+        }
+      }
+    },
+    "MovieEntity": {
+      "type": "object",
+      "title": "MovieEntity",
+      "properties": {
+        "movieType": {
+          "$ref": "#/definitions/MovieTypeEntity"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "inventory": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "CustomerRentalsEntity": {
+      "type": "object",
+      "title": "CustomerRentalsEntity",
+      "properties": {
+        "datePromised": {
+          "format": "date",
+          "type": "string"
+        },
+        "movie": {
+          "$ref": "#/definitions/MovieEntity"
+        },
+        "dateRented": {
+          "format": "date",
+          "type": "string"
+        },
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "dateReturned": {
+          "format": "date",
+          "type": "string"
+        },
+        "rentalCharge": {
+          "type": "number"
+        },
+        "customer": {
+          "$ref": "#/definitions/CustomerEntity"
+        }
+      }
+    },
+    "CustomerEntity": {
+      "type": "object",
+      "title": "CustomerEntity",
+      "properties": {
+        "bonusPoints": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "format": "int64",
+          "type": "integer"
+        }
+      }
+    },
+    "ReturnRentalRequestTO": {
+      "type": "object",
+      "title": "ReturnRentalRequestTO",
+      "properties": {
+        "movies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MovieEntity"
+          }
+        },
+        "customerEntity": {
+          "$ref": "#/definitions/CustomerEntity"
+        },
+        "timestamp": {
+          "format": "date",
+          "type": "string"
+        }
+      }
+    },
+    "RentalCharge": {
+      "type": "object",
+      "title": "RentalCharge",
+      "properties": {
+        "lateCharges": {
+          "type": "number"
+        },
+        "totalCharges": {
+          "type": "number"
+        },
+        "rentals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CustomerRentalsEntity"
+          }
+        },
+        "timestamp": {
+          "format": "date",
+          "type": "string"
+        }
+      }
+    },
+    "LoginRequestTO": {
+      "type": "object",
+      "title": "LoginRequestTO",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "MovieTypeEntity": {
+      "type": "object",
+      "title": "MovieTypeEntity",
+      "properties": {
+        "price": {
+          "type": "number"
+        },
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "swagger": "2.0",
+  "info": {
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    },
+    "contact": {},
+    "description": "Api Documentation",
+    "termsOfService": "urn:tos",
+    "title": "Api Documentation",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "authentication-controller",
+      "description": "Authentication Controller"
+    },
+    {
+      "name": "rental-controller",
+      "description": "Rental Controller"
+    }
+  ]
+}
