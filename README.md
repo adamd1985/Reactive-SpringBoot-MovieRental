@@ -2,6 +2,9 @@
 
 An industry standard reactive java spring-powered RESTful app.
 
+For those interested, this is the 'take-home' project requested by most iGaming companies - this in particular is from Casumo.
+Don't expect much challenge from companies whose only tech is slot machines.
+
 ## Important Technical Decisions:
 
 * Demo comes working out of the box, if requirements are satisfied: embedded database and a wrapper for build.
