@@ -1,4 +1,4 @@
-# Movie Rental Webserver
+# Reactive Java Spring Movie-Rental Webserver
 
 An industry standard reactive java spring-powered RESTful app.
 
