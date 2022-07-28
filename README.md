@@ -2,7 +2,7 @@
 
 An industry standard reactive java spring-powered RESTful app.
 
-**NB**: Inspired by **amatuerish technical interviews**, this is the 'take-home' project requested by most iGaming companies - this in particular is Casumo Tehnical Test and take home time-waster. Don't expect much challenge from companies whose only tech is slot machines.
+**NB**: Inspired by **amateurish technical interviews**, this is the 'take-home' project requested by most iGaming companies - this in particular is Casumo Tehnical Test and take home time-waster. Don't expect much challenge from companies whose only tech is slot machines.
 
 ## Important Technical Decisions:
 
